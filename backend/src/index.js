@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import Redis from 'ioredis';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 
 import { RateLimiter } from './services/rateLimiter.js';
 import { ApiKeyService } from './services/apiKeyService.js';
@@ -11,8 +13,12 @@ import { createDashboardRouter } from './routes/dashboard.js';
 
 dotenv.config();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 const PORT = process.env.PORT || 3001;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Middleware
 app.use(cors());
@@ -53,6 +59,15 @@ app.use('/api/v1', createApiRouter(services));
 
 // Dashboard routes (for admin UI)
 app.use('/dashboard', createDashboardRouter(services));
+
+// Serve static files in production
+if (isProduction) {
+  const publicPath = join(__dirname, '..', 'public');
+  app.use(express.static(publicPath));
+  app.get('*', (req, res) => {
+    res.sendFile(join(publicPath, 'index.html'));
+  });
+}
 
 // Error handling
 app.use((err, req, res, next) => {
