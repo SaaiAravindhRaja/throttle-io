@@ -21,7 +21,9 @@ import {
   Clock,
   TrendingUp,
   Users,
-  Lock
+  Lock,
+  Code,
+  Play
 } from 'lucide-react';
 import {
   AreaChart,
@@ -34,6 +36,8 @@ import {
   BarChart,
   Bar
 } from 'recharts';
+import { CodeSnippet } from './components/CodeSnippet';
+import { LiveDemo } from './components/LiveDemo';
 
 // Mock data generator
 const generateMockData = () => {
@@ -190,10 +194,12 @@ function Header({ systemStatus }) {
 function Navigation({ activeTab, setActiveTab }) {
   const tabs = [
     { id: 'overview', label: 'Command', icon: Terminal },
+    { id: 'demo', label: 'Demo', icon: Play },
     { id: 'projects', label: 'Projects', icon: Key },
     { id: 'rules', label: 'Rules', icon: Shield },
     { id: 'webhooks', label: 'Webhooks', icon: Bell },
-    { id: 'geo', label: 'Geo', icon: Globe }
+    { id: 'geo', label: 'Geo', icon: Globe },
+    { id: 'docs', label: 'Docs', icon: Code }
   ];
 
   return (
@@ -866,6 +872,16 @@ export default function App() {
           </div>
         )}
 
+        {activeTab === 'demo' && (
+          <div className="space-y-6">
+            <h2 className="text-sm uppercase tracking-wider text-[var(--text-secondary)]">
+              Interactive Rate Limiting Demo
+            </h2>
+            <LiveDemo />
+            <CodeSnippet />
+          </div>
+        )}
+
         {activeTab === 'projects' && <ProjectsPanel />}
         {activeTab === 'rules' && <RulesPanel />}
         {activeTab === 'webhooks' && <WebhooksPanel />}
@@ -897,6 +913,86 @@ export default function App() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'docs' && (
+          <div className="space-y-6">
+            <h2 className="text-sm uppercase tracking-wider text-[var(--text-secondary)]">
+              Documentation // Integration Guide
+            </h2>
+            <CodeSnippet />
+            <div className="grid grid-cols-3 gap-4">
+              <div className="card p-5 noise">
+                <div className="relative z-10">
+                  <h3 className="text-sm font-semibold mb-3 phosphor-dim">Token Bucket</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mb-4">
+                    Allows bursts up to bucket capacity while maintaining smooth average rate.
+                    Best for APIs with variable load patterns.
+                  </p>
+                  <div className="text-xs space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Memory</span>
+                      <span className="text-[var(--phosphor)]">Low</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Precision</span>
+                      <span className="text-[var(--phosphor)]">Good</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Burst Handling</span>
+                      <span className="text-[var(--phosphor)]">Excellent</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="card p-5 noise">
+                <div className="relative z-10">
+                  <h3 className="text-sm font-semibold mb-3 amber-glow">Sliding Window</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mb-4">
+                    Weighted combination of current and previous window counts.
+                    Balanced approach for most use cases.
+                  </p>
+                  <div className="text-xs space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Memory</span>
+                      <span className="text-[var(--alert-amber)]">Medium</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Precision</span>
+                      <span className="text-[var(--phosphor)]">High</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Burst Handling</span>
+                      <span className="text-[var(--phosphor)]">Good</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="card p-5 noise">
+                <div className="relative z-10">
+                  <h3 className="text-sm font-semibold mb-3">Fixed Window</h3>
+                  <p className="text-xs text-[var(--text-secondary)] mb-4">
+                    Simple counter that resets at fixed intervals.
+                    Simplest implementation but has boundary spike risk.
+                  </p>
+                  <div className="text-xs space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Memory</span>
+                      <span className="text-[var(--phosphor)]">Lowest</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Precision</span>
+                      <span className="text-[var(--alert-amber)]">Lower</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-[var(--text-tertiary)]">Burst Handling</span>
+                      <span className="text-[var(--alert-red)]">Poor</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
