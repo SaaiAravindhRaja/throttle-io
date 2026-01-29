@@ -39,6 +39,7 @@ import {
 import { CodeSnippet } from './components/CodeSnippet';
 import { LiveDemo } from './components/LiveDemo';
 import { AlgorithmArena } from './components/AlgorithmArena';
+import { InterviewMode } from './components/InterviewMode';
 import './components/AlgorithmArena.css';
 
 // Mock data generator
@@ -142,7 +143,7 @@ function MetricCard({ label, value, subvalue, icon: Icon, trend, status }) {
 }
 
 // Header component
-function Header({ systemStatus }) {
+function Header({ systemStatus, onInterviewMode }) {
   const [time, setTime] = useState(new Date());
 
   useEffect(() => {
@@ -172,6 +173,14 @@ function Header({ systemStatus }) {
           </div>
         </div>
         <div className="flex items-center gap-6">
+          <button
+            onClick={onInterviewMode}
+            className="btn btn-primary text-xs py-2 px-4 flex items-center gap-2"
+          >
+            <Users size={14} />
+            Interview Mode
+          </button>
+          <div className="h-8 w-px bg-[var(--border)]" />
           <div className="text-right">
             <div className="text-xs text-[var(--text-tertiary)] uppercase tracking-wider">System Time</div>
             <div className="data-value text-sm phosphor-dim">
@@ -790,6 +799,7 @@ function WebhooksPanel() {
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
   const [trafficData, setTrafficData] = useState(generateMockData());
+  const [showInterviewMode, setShowInterviewMode] = useState(false);
   const [metrics, setMetrics] = useState({
     requestsPerSecond: 847,
     totalRequests: 2847291,
@@ -822,7 +832,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header systemStatus="active" />
+      {showInterviewMode && <InterviewMode onClose={() => setShowInterviewMode(false)} />}
+      <Header systemStatus="active" onInterviewMode={() => setShowInterviewMode(true)} />
       <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
       <main className="flex-1 p-6 grid-bg">
