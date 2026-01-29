@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { createHmac } from 'crypto';
 
 export class WebhookService {
   constructor(redis) {
@@ -105,8 +106,7 @@ export class WebhookService {
    * Sign payload with webhook secret
    */
   sign(payload, secret) {
-    const crypto = await import('crypto');
-    const hmac = crypto.createHmac('sha256', secret);
+    const hmac = createHmac('sha256', secret);
     hmac.update(JSON.stringify(payload));
     return `sha256=${hmac.digest('hex')}`;
   }
