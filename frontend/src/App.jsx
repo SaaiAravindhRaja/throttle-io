@@ -38,6 +38,8 @@ import {
 } from 'recharts';
 import { CodeSnippet } from './components/CodeSnippet';
 import { LiveDemo } from './components/LiveDemo';
+import { AlgorithmArena } from './components/AlgorithmArena';
+import './components/AlgorithmArena.css';
 
 // Mock data generator
 const generateMockData = () => {
@@ -874,11 +876,11 @@ export default function App() {
 
         {activeTab === 'demo' && (
           <div className="space-y-6">
-            <h2 className="text-sm uppercase tracking-wider text-[var(--text-secondary)]">
-              Interactive Rate Limiting Demo
-            </h2>
-            <LiveDemo />
-            <CodeSnippet />
+            <AlgorithmArena />
+            <div className="grid grid-cols-2 gap-6">
+              <LiveDemo />
+              <CodeSnippet />
+            </div>
           </div>
         )}
 
